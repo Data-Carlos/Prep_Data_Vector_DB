@@ -1,5 +1,3 @@
-Sure, let's update the instructions with the correct Kaggle URL. Here is the revised tutorial:
-
 # Tutorial: Creating a Chunked Dataset of arXiv Papers for a Vector Database
 
 ## Introduction
