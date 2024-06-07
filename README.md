@@ -1,40 +1,37 @@
 # Tutorial: Creating a Chunked Dataset of arXiv Papers for a Vector Database
 
 ## Introduction
-
 In this tutorial, we will walk through the process of creating a chunked dataset of arXiv papers, which can later be used for a vector database. We will cover the following steps:
 
-1. **Downloading the metadata dataset from Kaggle**
-2. **Processing and chunking the dataset**
-3. **Setting up and leveraging the dataset for a vector database**
+1. Downloading the metadata dataset from Kaggle
+2. Processing and chunking the dataset
+3. Setting up and leveraging the dataset for a vector database
 
 By the end of this tutorial, you will have a comprehensive understanding of how to transform arXiv papers into a format suitable for a vector database.
 
 ## Prerequisites
-
 Before we begin, ensure you have the following installed on your system:
 
 - Python 3.x
 - Required Python libraries: `json`, `os`, `datetime`, `requests`, `PyPDF2`, `pandas`
 
 You can install the required libraries using pip:
+
 ```bash
 pip install requests PyPDF2 pandas
 ```
 
 ## Step 1: Download the Metadata Dataset from Kaggle
-
 First, you need to download the arXiv metadata dataset from Kaggle. You can use the Kaggle API or a direct download link.
 
-### Using `curl` to Download the Dataset
+### Using curl to Download the Dataset
+To download the dataset using curl, run the following command in your terminal:
 
-To download the dataset using `curl`, run the following command in your terminal:
 ```bash
 curl -L -o arxiv-metadata-oai-snapshot.json https://www.kaggle.com/datasets/Cornell-University/arxiv
 ```
 
 ## Step 2: Extract Relevant Metadata
-
 We will process the metadata to extract the IDs of papers updated after a certain date.
 
 ```python
@@ -58,7 +55,6 @@ with open(metadata_path, encoding="utf8") as f:
 ```
 
 ## Step 3: Download PDFs of the Papers
-
 Next, we will download the PDFs of the selected papers.
 
 ```python
@@ -92,7 +88,6 @@ print("Download complete.")
 ```
 
 ## Step 4: Convert PDFs to Text
-
 We will convert the downloaded PDFs to text files for easier processing.
 
 ```python
@@ -123,7 +118,7 @@ def convert_pdf_to_txt(pdf_path, txt_path):
 
 # Iterate over all PDFs in the directory and convert them to TXT
 for pdf_filename in os.listdir(pdf_directory):
-    if pdf_filename.endswith('.pdf'):
+    if (pdf_filename.endswith('.pdf')):
         pdf_path = os.path.join(pdf_directory, pdf_filename)
         txt_filename = os.path.splitext(pdf_filename)[0] + '.txt'
         txt_path = os.path.join(txt_directory, txt_filename)
@@ -131,12 +126,6 @@ for pdf_filename in os.listdir(pdf_directory):
 ```
 
 ## Step 5: Chunk Text and Add Metadata
-Understanding the Concept
-Chunking is the process of breaking down a large text into smaller, manageable pieces or chunks. This is especially useful for large documents like research papers, where processing the entire text as a single unit can be inefficient and overwhelming. By breaking the text into smaller chunks, we can more easily analyze, process, and store the data.
-
-Additionally, metadata refers to data that provides information about other data. For example, metadata for a research paper might include the paper's title, authors, abstract, and publication date. When we chunk the text of a paper, we want to retain this metadata so that each chunk of text can be linked back to the original paper and its details.
-
-By chunking the text and adding metadata, we can prepare the data for various applications, such as building a vector database where each chunk of text, along with its associated metadata, can be indexed and searched efficiently.
 We will chunk the text files into smaller parts and add metadata for each chunk.
 
 ```python
@@ -192,7 +181,22 @@ for txt_filename in os.listdir(txt_directory):
             # Add metadata fields to chunk_data
             chunk_data.update(metadata)
             chunks_data.append(chunk_data)
+```
 
+## Step 6: Convert Data to Strings for Embedding Model
+To prepare the dataset for an embedding model, we need to ensure all data is converted to strings.
+
+```python
+# Convert all data to strings
+for chunk in chunks_data:
+    for key, value in chunk.items():
+        chunk[key] = str(value)
+```
+
+## Step 7: Save the DataFrame to a CSV File
+Finally, we will save the DataFrame to a CSV file.
+
+```python
 # Convert the data to a DataFrame
 df = pd.DataFrame(chunks_data)
 
@@ -206,7 +210,6 @@ print("CSV file created successfully.")
 ```
 
 ## Conclusion
-
-In this tutorial, we covered how to download, process, and chunk a dataset of arXiv papers. By following these steps, you can prepare a chunked dataset ready for use in a vector database. This process transforms you from a beginner to a proficient user capable of managing and utilizing large text datasets.
+In this tutorial, we covered how to download, process, and chunk a dataset of arXiv papers. We also added a step to convert all data to strings, preparing it for use in an embedding model. By following these steps, you can prepare a chunked dataset ready for use in a vector database. This process transforms you from a beginner to a proficient user capable of managing and utilizing large text datasets.
 
 Feel free to ask questions or provide feedback to improve this tutorial further. Happy coding!
