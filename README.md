@@ -1,4 +1,4 @@
-# Tutorial: Preparing arXiv Metadata for Embedding Models
+# Tutorial: Preparing arXiv Articles for Embedding Models
 
 In this tutorial, we'll guide you through the process of downloading, processing, and chunking a dataset of arXiv papers. This tutorial is essential for anyone looking to manage and utilize large text datasets, especially for applications involving machine learning and embedding models.
 
